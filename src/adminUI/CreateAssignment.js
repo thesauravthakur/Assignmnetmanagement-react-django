@@ -249,7 +249,7 @@ class CreateAssignment extends React.Component {
                                     <FormItem>
                                         <Button
                                             type="danger"
-                                            htmlType="submit"
+
                                             onClick={() => { this.props.form.resetFields() }}
                                             style={{ marginRight: "10px" }}
 
@@ -257,6 +257,7 @@ class CreateAssignment extends React.Component {
                                             Reset Fields
                                         </Button>
                                         <Button
+                                            htmlType="submit"
                                             type="primary"
                                             style={{ marginRight: "10px", float: "right" }}
                                         >
