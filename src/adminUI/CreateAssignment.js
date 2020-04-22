@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Hoc from '../hoc/hoc';
-import { Form, Input, Button, Icon, Divider } from 'antd';
+import { Form, Input, Button, Icon, Divider, notification } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import * as actions from "../store/actions/assignment";
 
 import { Skeleton } from 'antd';
+const tempdata = []
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: {
@@ -167,7 +168,7 @@ class CreateAssignment extends React.Component {
         const choices = []
         this.props.form.validateFields((err, values) => {
 
-
+            tempdata = values
 
             const data = {
                 assignment: values,
@@ -184,8 +185,23 @@ class CreateAssignment extends React.Component {
             }
         });
     };
+
+    openNotification = () => {
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                notification.open({
+                    message: 'Please Input The Data Correctly',
+                });
+            } else {
+                notification.open({
+                    message: values.title,
+                    description: `Assignment Created Successfully with Title ${values.title}`,
+                });
+            }
+        })
+
+    };
     render() {
-        const choiceData = []
         const { boxCount } = this.state;
         const question = []
         for (let i = 0; i < boxCount; i++) {
@@ -251,15 +267,16 @@ class CreateAssignment extends React.Component {
                                             type="danger"
 
                                             onClick={() => { this.props.form.resetFields() }}
-                                            style={{ marginRight: "10px" }}
+
 
                                         >
                                             Reset Fields
                                         </Button>
                                         <Button
+                                            onClick={this.openNotification}
                                             htmlType="submit"
                                             type="primary"
-                                            style={{ marginRight: "10px", float: "right" }}
+                                            style={{ float: "right" }}
                                         >
                                             <PlusOutlined /> Submit
                                         </Button>

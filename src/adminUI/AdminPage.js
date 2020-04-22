@@ -58,7 +58,7 @@ class AdminPage extends React.Component {
                                         >
 
                                             <List.Item.Meta
-                                                title={<a href="https://ant.design">{item.title}</a>}
+                                                title={<a href={`/detail/${item.id}`}>{item.title}</a>}
                                             />
                                             <div>{item.teacher}</div>
 
