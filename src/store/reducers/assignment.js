@@ -16,7 +16,6 @@ const getAssignmentStart = (state, action) => {
 };
 
 const getAssignmentSuccess = (state, action) => {
-  console.log(action)
   return updateObject(state, {
     assignments: action.assignments,
     error: null,
@@ -30,6 +29,61 @@ const getAssignmentFail = (state, action) => {
     loading: false
   });
 };
+
+
+
+const getDetailAssignmentStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: true
+  });
+};
+
+const getDetailAssignmentSuccess = (state, action) => {
+  return updateObject(state, {
+    assignment: action.assignment,
+    error: null,
+    loading: false
+  });
+};
+
+const getDetailAssignmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
+
+const submitAssignmentStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: true
+  });
+};
+
+const submitAssignmentSuccess = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: false
+  });
+};
+
+const submitAssignmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
+
+
+
+
 
 const postAssignmentStart = (state, action) => {
   return updateObject(state, {
@@ -66,6 +120,18 @@ const reducer = (state = initialState, action) => {
       return getAssignmentSuccess(state, action);
     case actionTypes.GET_ASSIGNMENT_FAIL:
       return getAssignmentFail(state, action);
+    case actionTypes.GET_DETAIL_ASSIGNMENT_START:
+      return getDetailAssignmentStart(state, action);
+    case actionTypes.GET_DETAIL_ASSIGNMENT_SUCCESS:
+      return getDetailAssignmentSuccess(state, action);
+    case actionTypes.GET_DETAIL_ASSIGNMENT_FAIL:
+      return getDetailAssignmentFail(state, action);
+    case actionTypes.SUBMIT_ASSIGNMENT_START:
+      return submitAssignmentStart(state, action);
+    case actionTypes.SUBMIT_ASSIGNMENT_SUCCESS:
+      return submitAssignmentSuccess(state, action);
+    case actionTypes.SUBMIT_ASSIGNMENT_FAIL:
+      return submitAssignmentFail(state, action);
     default:
       return state;
   }

@@ -12,7 +12,6 @@ class AdminPage extends React.Component {
     state = {
         initLoading: true,
         loading: false,
-        data: this.props.assignments,
         list: [],
     };
     componentDidMount() {

@@ -6,7 +6,7 @@ import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import * as actions from "../store/actions/assignment";
 
 import { Skeleton } from 'antd';
-const tempdata = []
+
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: {
@@ -168,7 +168,6 @@ class CreateAssignment extends React.Component {
         const choices = []
         this.props.form.validateFields((err, values) => {
 
-            tempdata = values
 
             const data = {
                 assignment: values,

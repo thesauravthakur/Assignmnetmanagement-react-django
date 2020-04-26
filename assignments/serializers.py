@@ -4,6 +4,7 @@ from users.serializers import TeacherSerializer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from .models import Assignment, Question, Choice, StudentGrade
+from users.models import Student, User
 
 
 class StringSerializer(serializers.StringRelatedField):
@@ -11,12 +12,26 @@ class StringSerializer(serializers.StringRelatedField):
         return value
 
 
+class QuestionSerializer(serializers.ModelSerializer):
+    choice = Choice.objects.all()
+    choice = StringSerializer(many=True)
+
+    class Meta:
+        model = Question
+        fields = ('id', 'question', 'assignment', 'choice')
+
+
 class AssignmentSerializer(serializers.ModelSerializer):
+    questions = serializers.SerializerMethodField()
     teacher = StringSerializer(many=False)
 
     class Meta:
         model = Assignment
-        fields = ("id", "title", "teacher")
+        fields = ("id", "title", "teacher", "questions")
+
+    def get_questions(self, obj):
+        questions = QuestionSerializer(obj.question.all(), many=True).data
+        return questions
 
     def create(self, request):
         data = request.data
@@ -65,7 +80,6 @@ class AssignmentSerializer(serializers.ModelSerializer):
                         'choices': choices,
                     }
                     formatedData.append(somedata)
-        print(formatedData)
         assignment = Assignment()
         teacher = Teacher.objects.get(id=data['userId'])
         assignment.title = data['assignment']['title']
@@ -74,9 +88,9 @@ class AssignmentSerializer(serializers.ModelSerializer):
         for item in formatedData:
             question = Question()
             question.question = item['question']
+            question.answer = item['answer']
             question.assignment = assignment
             question.save()
-            print(item)
             for choice in item['choices']:
                 newChoice = Choice()
                 newChoice.choice = choice
@@ -84,3 +98,39 @@ class AssignmentSerializer(serializers.ModelSerializer):
                 newChoice.save()
         print('success')
         return assignment
+
+
+class StudentGradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentGrade
+        fields = ("student", "assignment", "grade")
+
+    def create(self, request):
+        data = request.data
+        student = User.objects.get(username=data['studentName'])
+        assignment = Assignment.objects.get(id=data['assignmentId'])
+        studentGrade = StudentGrade()
+        dataList = []
+        questionList = []
+        questionIdList = []
+        answerList = []
+        userAnswer = data['userAnswer']
+        for ans in userAnswer:
+            ansList = ans.split(':')
+            dataList.append(ansList)
+        for ans in dataList:
+            questionList.append(ans[0])
+            questionIdList.append(ans[1])
+            answerList.append(ans[2])
+        correct_ans = 0
+        for i in range(len(questionIdList)):
+            oldQuestion = Question.objects.get(id=questionIdList[i])
+            if oldQuestion.answer == answerList[i]:
+                correct_ans += 1
+        grade = (correct_ans / data['questionLength']) * 100
+        grade = '%.2f' % grade
+        studentGrade.student = student
+        studentGrade.assignment = assignment
+        studentGrade.grade = grade
+        studentGrade.save()
+        return studentGrade

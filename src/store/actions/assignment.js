@@ -25,6 +25,58 @@ export const getAssignmentFail = error => {
 
 
 
+
+
+
+
+export const getDetailAssignmentStart = () => {
+  return {
+    type: actionTypes.GET_DETAIL_ASSIGNMENT_START
+  };
+};
+
+export const getDetailAssignmentSuccess = (assignment) => {
+  return {
+    type: actionTypes.GET_DETAIL_ASSIGNMENT_SUCCESS,
+    assignment
+  };
+};
+
+export const getDetailAssignmentFail = error => {
+  return {
+    type: actionTypes.GET_DETAIL_ASSIGNMENT_FAIL,
+    error: error
+  };
+};
+
+
+
+
+
+
+export const submitAssignmentStart = () => {
+  return {
+    type: actionTypes.SUBMIT_ASSIGNMENT_START
+  };
+};
+
+export const submitAssignmentSuccess = () => {
+  return {
+    type: actionTypes.SUBMIT_ASSIGNMENT_SUCCESS,
+  };
+};
+
+export const submitAssignmentFail = error => {
+  return {
+    type: actionTypes.SUBMIT_ASSIGNMENT_FAIL,
+    error: error
+  };
+};
+
+
+
+
+
 export const postAssignmentStart = () => {
   return {
     type: actionTypes.POST_ASSIGNMENT_SUCCESS
@@ -44,6 +96,12 @@ export const postAssignmentFail = error => {
     error: error
   };
 };
+
+
+
+
+
+
 
 
 export const getAssignment = (token) => {
@@ -68,7 +126,43 @@ export const getAssignment = (token) => {
   };
 };
 
+export const getDetailAssignment = (token, id) => {
+  return dispatch => {
+    dispatch(getDetailAssignmentStart());
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    axios
+      .get(`http://127.0.0.1:8000/assignments/assignment_list/${id}`)
+      .then(res => {
+        dispatch(getDetailAssignmentSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(getDetailAssignmentFail(err));
+      });
+  };
+};
 
+export const submitAssignment = (userAnswer, token) => {
+  return dispatch => {
+    console.log(userAnswer, token)
+    dispatch(submitAssignmentStart());
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+
+    };
+    axios
+      .post("http://127.0.0.1:8000/assignments/assignment_submit/", userAnswer)
+      .then(res => {
+        dispatch(submitAssignmentSuccess());
+      })
+      .catch(err => {
+        dispatch(submitAssignmentFail(err));
+      });
+  };
+};
 
 
 
@@ -91,4 +185,5 @@ export const postAssignment = (assignment, token) => {
       });
   };
 };
+
 

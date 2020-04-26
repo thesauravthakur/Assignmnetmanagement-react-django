@@ -12,7 +12,10 @@ class Assignment(models.Model):
 
 class Question(models.Model):
     question = models.CharField(max_length=500)
-    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment,
+                                   on_delete=models.CASCADE,
+                                   related_name='question')
+    answer = models.CharField(max_length=200)
 
     def __str__(self):
         return self.question
@@ -20,14 +23,19 @@ class Question(models.Model):
 
 class Choice(models.Model):
     choice = models.CharField(max_length=250)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question,
+                                 on_delete=models.CASCADE,
+                                 related_name='choice')
 
     def __str__(self):
         return self.choice
 
 
 class StudentGrade(models.Model):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+    student = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
     assignment = models.ForeignKey(Assignment,
                                    on_delete=models.SET_NULL,
                                    blank=True,
@@ -35,4 +43,4 @@ class StudentGrade(models.Model):
     grade = models.FloatField()
 
     def __str__(self):
-        return self.student
+        return self.student.username
