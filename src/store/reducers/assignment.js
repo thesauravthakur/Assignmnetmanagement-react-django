@@ -6,6 +6,7 @@ const initialState = {
   assignment: {},
   error: null,
   loading: false,
+  grade: [],
 };
 
 const getAssignmentStart = (state, action) => {
@@ -29,6 +30,33 @@ const getAssignmentFail = (state, action) => {
     loading: false
   });
 };
+
+
+
+const getGradedAssignmentStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: true
+  });
+};
+
+const getGradedAssignmentSuccess = (state, action) => {
+  return updateObject(state, {
+    grade: action.grade,
+    error: null,
+    loading: false
+  });
+};
+
+const getGradedAssignmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
 
 
 
@@ -132,6 +160,12 @@ const reducer = (state = initialState, action) => {
       return submitAssignmentSuccess(state, action);
     case actionTypes.SUBMIT_ASSIGNMENT_FAIL:
       return submitAssignmentFail(state, action);
+    case actionTypes.GET_GRADED_ASSIGNMENT_START:
+      return getGradedAssignmentStart(state, action);
+    case actionTypes.GET_GRADED_ASSIGNMENT_SUCCESS:
+      return getGradedAssignmentSuccess(state, action);
+    case actionTypes.GET_GRADED_ASSIGNMENT_FAIL:
+      return getGradedAssignmentFail(state, action);
     default:
       return state;
   }

@@ -9,6 +9,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('assignments-grade/', include('assignments.gradedurls.urls')),
     path('assignments/', include('assignments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   username: null,
   userId: null,
+  userData: {},
 };
 
 const authStart = (state, action) => {
@@ -39,6 +40,37 @@ const authLogout = (state, action) => {
   });
 };
 
+
+
+const getUserStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: true
+  });
+};
+
+const getUserSuccess = (state, action) => {
+  console.log(state)
+  return updateObject(state, {
+    userData: action.userData,
+    error: null,
+    loading: false
+  });
+};
+
+const getUserFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
+
+
+
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -49,6 +81,12 @@ const reducer = (state = initialState, action) => {
       return authFail(state, action);
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action);
+    case actionTypes.GET_USER_DATA_START:
+      return getUserStart(state, action);
+    case actionTypes.GET_USER_DATA_SUCCESS:
+      return getUserSuccess(state, action);
+    case actionTypes.GET_USER_DATA_FAIL:
+      return getUserFail(state, action);
     default:
       return state;
   }

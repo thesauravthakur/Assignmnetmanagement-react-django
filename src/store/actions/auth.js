@@ -11,7 +11,7 @@ export const authSuccess = user => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     user
-  };  
+  };
 };
 
 export const authFail = error => {
@@ -20,6 +20,7 @@ export const authFail = error => {
     error: error
   };
 };
+
 
 export const logout = () => {
   localStorage.removeItem("user");
@@ -36,6 +37,33 @@ export const checkAuthTimeout = expirationTime => {
   };
 };
 
+
+export const getUserStart = () => {
+  return {
+    type: actionTypes.GET_USER_DATA_START
+  };
+};
+
+export const getUserSuccess = userData => {
+  return {
+    type: actionTypes.GET_USER_DATA_SUCCESS,
+    userData
+  };
+};
+
+export const getUserFail = error => {
+  return {
+    type: actionTypes.GET_USER_DATA_FAIL,
+    error: error
+  };
+};
+
+
+
+
+
+
+
 export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
@@ -45,7 +73,6 @@ export const authLogin = (username, password) => {
         password: password
       })
       .then(res => {
-        console.log(res.data)
         const user = {
           token: res.data.key,
           username,
@@ -126,5 +153,21 @@ export const authCheckState = () => {
         );
       }
     }
+  };
+};
+
+export const getUserData = () => {
+  return dispatch => {
+    dispatch(getUserStart());
+    const userId = JSON.parse(localStorage.getItem('user')).userId
+    axios
+      .get(`http://127.0.0.1:8000/users/users_list/${userId}`)
+      .then(res => {
+        console.log(res.data)
+        dispatch(getUserSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(getUserFail(err));
+      });
   };
 };

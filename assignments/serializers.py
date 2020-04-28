@@ -101,13 +101,17 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 
 class StudentGradeSerializer(serializers.ModelSerializer):
+    student = StringSerializer(many=False)
+    assignment = StringSerializer(many=False)
+
     class Meta:
         model = StudentGrade
-        fields = ("student", "assignment", "grade")
+        fields = ("id", "student", "assignment", "grade")
 
     def create(self, request):
+        print(request.data)
         data = request.data
-        student = User.objects.get(username=data['studentName'])
+        student = User.objects.get(id=data['userId'])
         assignment = Assignment.objects.get(id=data['assignmentId'])
         studentGrade = StudentGrade()
         dataList = []
