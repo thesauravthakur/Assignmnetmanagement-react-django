@@ -32,14 +32,14 @@ class Choice(models.Model):
 
 
 class StudentGrade(models.Model):
-    student = models.OneToOneField(
+    student = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
-    assignment = models.ForeignKey(Assignment,
-                                   on_delete=models.SET_NULL,
-                                   blank=True,
-                                   null=True)
+    assignment = models.OneToOneField(Assignment,
+                                      on_delete=models.SET_NULL,
+                                      blank=True,
+                                      null=True)
     grade = models.FloatField()
 
     def __str__(self):

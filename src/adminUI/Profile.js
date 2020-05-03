@@ -8,9 +8,12 @@ import * as assActions from "../store/actions/assignment";
 
 class Result extends React.Component {
     render() {
+        console.log(this.props)
+
         return (
-            <Hoc>
-                <Progress type="circle" percent={this.props.grade} width={80} />
+            <Hoc style={{ textAlign: 'center' }}>
+                <Progress className='row' style={{ padding: '10px' }} type="circle" percent={this.props.grade} width={80} />
+                <div style={{ overflowWrap: 'break-word' }}>{this.props.assignment}</div>
             </Hoc>
         );
     }
@@ -60,9 +63,9 @@ class Profile extends React.Component {
 
                                 <List
                                     size="large"
-
+                                    style={{ textAlign: 'center' }}
                                     dataSource={this.props.grade}
-                                    renderItem={assignment => <Result key={assignment.id} grade={assignment.grade} />}
+                                    renderItem={assignment => <Result key={assignment.id} grade={assignment.grade} assignment={assignment.assignment} />}
                                 />
                             </Hoc>
                         )
@@ -74,6 +77,7 @@ class Profile extends React.Component {
     }
 }
 const mapStateToProps = state => {
+    console.log(state.assignment.grade)
     return {
         assignments: state.assignment.assignments,
         token: state.auth.token,
