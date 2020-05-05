@@ -12,6 +12,7 @@ import AdminPage from "./adminUI/AdminPage";
 import CreateAssignment from './adminUI/CreateAssignment';
 import DetailAssignment from './adminUI/DetailAssignment';
 import Profile from './adminUI/Profile';
+import EditAssignment from './adminUI/EditAssignment';
 class AdminAuthRoutes extends React.Component {
   render() {
     return (
@@ -24,6 +25,7 @@ class AdminAuthRoutes extends React.Component {
           <Route exact path="/admin" component={AdminPage} />
           <Route exact path="/create-assignment" component={CreateAssignment} />
           <Route exact path="/detail/:id" component={DetailAssignment} />
+          <Route exact path="/edit/:id" component={EditAssignment} />
 
         </CustomLayout>
 

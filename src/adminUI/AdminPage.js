@@ -50,7 +50,7 @@ class AdminPage extends React.Component {
                                         <List.Item
                                             actions={[
                                                 this.props.username === item.teacher &&
-                                                < a key="list-loadmore-edit" >edit</a>
+                                                <Link to={`/edit/${item.id}`} key="list-loadmore-more">edit</Link>
                                                 ,
                                                 <Link to={`/detail/${item.id}`} key="list-loadmore-more">more</Link>
                                             ]}
