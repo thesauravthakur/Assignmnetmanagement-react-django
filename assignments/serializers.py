@@ -218,8 +218,6 @@ class AssignmentSerializer(serializers.ModelSerializer):
         print('edit success')
         return assignment
 
-    
-
 
 class StudentGradeSerializer(serializers.ModelSerializer):
     student = StringSerializer(many=False)

@@ -22,6 +22,15 @@ class AssignmentView(viewsets.ModelViewSet):
                 return Response(HTTP_201_CREATED)
         return Response(HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        id = kwargs['pk']
+        serializedAssignment = AssignmentSerializer(data=request.data)
+        if serializedAssignment.is_valid:
+            assignment = serializedAssignment.update(request, id=id)
+            if assignment:
+                return Response(HTTP_201_CREATED)
+        return Response(HTTP_400_BAD_REQUEST)
+
     def destroy(self, request, *args, **kwargs):
         id = kwargs['pk']
         assignmnet = Assignment.objects.get(id=id)
