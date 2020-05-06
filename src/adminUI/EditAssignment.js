@@ -75,6 +75,33 @@ class ChoiceForm1 extends React.Component {
     }
 }
 
+class ChoiceForm2 extends React.Component {
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        return (
+            <Hoc {...formItemLayout}>
+                <FormItem
+                    labelCol={{ span: 5 }}
+                    wrapperCol={{ span: 15 }}
+                    label="Choice"
+                >
+                    {getFieldDecorator(`choiceaddagain${this.props.index}${this.props.item}`, {
+
+                        rules: [
+                            { required: true, message: "Please input  Choice !" }
+                        ]
+                    })(
+                        <Input
+
+                            placeholder="Choice"
+                        />
+                    )}
+                </FormItem>
+            </Hoc>
+        );
+    }
+}
+
 
 
 
@@ -155,6 +182,7 @@ class QuestionForm extends React.Component {
                     )}
                 </FormItem>
                 {choicesForm}
+                {choicesForm1}
                 <Form.Item style={{ textAlign: '-webkit-right' }} wrapperCol={{ span: 18 }}>
                     <Button
 
@@ -200,11 +228,11 @@ class QuestionForm1 extends React.Component {
     }
     render() {
         const { boxCount } = this.state;
-        const choicesForm = []
+        const choicesForm2 = []
         for (let i = 0; i < boxCount; i++) {
-            choicesForm.push(
+            choicesForm2.push(
                 <Hoc key={i}>
-                    <ChoiceForm item={i}  {...this.props} />
+                    <ChoiceForm2 item={i}  {...this.props} />
                 </Hoc>
             )
         }
@@ -245,7 +273,7 @@ class QuestionForm1 extends React.Component {
                         />
                     )}
                 </FormItem>
-                {choicesForm}
+                {choicesForm2}
                 <Form.Item style={{ textAlign: '-webkit-right' }} wrapperCol={{ span: 18 }}>
                     <Button
 
@@ -291,9 +319,6 @@ class EditAssignment extends React.Component {
         if (this.props.token !== undefined && this.props.token !== null) {
             this.props.getDetailAssignment(this.props.token, id)
         }
-        if (Object.keys(this.props.assignment) > 0) {
-            console.log(this.props.assignment)
-        }
 
     }
     componentWillReceiveProps(newProps) {
@@ -326,9 +351,9 @@ class EditAssignment extends React.Component {
     }
     handleSubmit = e => {
         e.preventDefault();
-        const choices = []
+        let id = this.props.match.params.id
         this.props.form.validateFields((err, values) => {
-
+            console.log(values)
 
             const data = {
                 assignment: values,
@@ -338,17 +363,17 @@ class EditAssignment extends React.Component {
             }
             console.log(data)
             if (!err) {
-                // localStorage.setItem('assignmentTitle', JSON.stringify(values.title))
-                // this.props.postAssignment(data, this.props.token)
-                // console.log('route')
-                // this.props.history.push('/admin')
+                localStorage.setItem('assignmentTitle', JSON.stringify(values.title))
+                this.props.editDetailAssignment(data, this.props.token, id)
+                console.log('route')
+                this.props.history.push('/admin')
             }
         });
     };
 
 
     render() {
-        const { getFieldDecorator, setFieldsValue } = this.props.form;
+        const { getFieldDecorator } = this.props.form;
 
 
         console.log(this.props.assignment)
@@ -401,7 +426,7 @@ class EditAssignment extends React.Component {
                                             rules: [
                                                 { required: true, message: "Please input  Title!" }
                                             ],
-                                            initialValue: 'saurav',
+                                            initialValue: assignment.title,
                                         })(
                                             <Input
 
@@ -443,7 +468,7 @@ class EditAssignment extends React.Component {
                                             Reset Fields
                                         </Button>
                                         <Button
-                                            onClick={this.openNotification}
+                                            // onClick={this.openNotification}
                                             htmlType="submit"
                                             type="primary"
                                             style={{ float: "right" }}
@@ -480,8 +505,8 @@ const mapDispatchToProps = dispatch => {
             dispatch(
                 actions.getDetailAssignment(token, id)
             ),
-        submitAssignment: (userAnswer, token) =>
-            dispatch(actions.submitAssignment(userAnswer, token))
+        editDetailAssignment: (userAnswer, token, id) =>
+            dispatch(actions.editDetailAssignment(userAnswer, token, id))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalEditAssignment);

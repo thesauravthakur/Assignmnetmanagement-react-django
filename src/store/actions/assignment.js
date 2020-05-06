@@ -124,6 +124,33 @@ export const getGradedAssignmentFail = error => {
 
 
 
+export const editDetailAssignmentStart = () => {
+  return {
+    type: actionTypes.EDIT_DETAIL_ASSIGNMENT_START
+  };
+};
+
+export const editDetailAssignmentSuccess = () => {
+  return {
+    type: actionTypes.EDIT_DETAIL_ASSIGNMENT_SUCCESS,
+  };
+};
+
+export const editDetailAssignmentFail = error => {
+  return {
+    type: actionTypes.EDIT_DETAIL_ASSIGNMENT_FAIL,
+    error: error
+  };
+};
+
+
+
+
+
+
+
+
+
 
 
 
@@ -155,7 +182,7 @@ export const getDetailAssignment = (token, id) => {
       Authorization: `Token ${token}`,
     };
     axios
-      .get(`http://127.0.0.1:8000/assignments/assignment_list/${id}`)
+      .get(`http://127.0.0.1:8000/assignments/assignment_list/${id}/`)
       .then(res => {
         dispatch(getDetailAssignmentSuccess(res.data));
       })
@@ -225,6 +252,24 @@ export const getGradedAssignment = (username, token) => {
       })
       .catch(err => {
         dispatch(getGradedAssignmentFail(err));
+      });
+  };
+};
+
+export const editDetailAssignment = (data, token, id) => {
+  return dispatch => {
+    dispatch(editDetailAssignmentStart());
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    axios
+      .put(`http://127.0.0.1:8000/assignments/assignment_list/${id}/`, data)
+      .then(res => {
+        dispatch(editDetailAssignmentSuccess());
+      })
+      .catch(err => {
+        dispatch(editDetailAssignmentFail(err));
       });
   };
 };

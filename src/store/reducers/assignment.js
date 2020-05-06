@@ -134,6 +134,32 @@ const postAssignmentFail = (state, action) => {
   });
 };
 
+
+const editDetailAssignmentStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: true
+  });
+};
+
+const editDetailAssignmentSuccess = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: false
+  });
+};
+
+const editDetailAssignmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
+
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.POST_ASSIGNMENT_SUCCESS:
@@ -166,6 +192,12 @@ const reducer = (state = initialState, action) => {
       return getGradedAssignmentSuccess(state, action);
     case actionTypes.GET_GRADED_ASSIGNMENT_FAIL:
       return getGradedAssignmentFail(state, action);
+    case actionTypes.EDIT_DETAIL_ASSIGNMENT_START:
+      return editDetailAssignmentStart(state, action);
+    case actionTypes.EDIT_DETAIL_ASSIGNMENT_SUCCESS:
+      return editDetailAssignmentSuccess(state, action);
+    case actionTypes.EDIT_DETAIL_ASSIGNMENT_FAIL:
+      return editDetailAssignmentFail(state, action);
     default:
       return state;
   }

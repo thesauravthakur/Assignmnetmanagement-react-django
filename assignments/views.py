@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from django.http import JsonResponse, HttpResponse
 from rest_framework.parsers import JSONParser
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_202_ACCEPTED
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from .models import Assignment, Question, Choice, StudentGrade
 from .serializers import AssignmentSerializer, QuestionSerializer, StudentGradeSerializer
@@ -20,6 +20,15 @@ class AssignmentView(viewsets.ModelViewSet):
             assignment = serializedAssignment.create(request)
             if assignment:
                 return Response(HTTP_201_CREATED)
+        return Response(HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        id = kwargs['pk']
+        serializedAssignment = AssignmentSerializer(data=request.data)
+        if serializedAssignment.is_valid:
+            assignment = serializedAssignment.update(request, id=id)
+            if assignment:
+                return Response(HTTP_202_ACCEPTED)
         return Response(HTTP_400_BAD_REQUEST)
 
 

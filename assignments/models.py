@@ -37,7 +37,7 @@ class StudentGrade(models.Model):
         on_delete=models.CASCADE,
     )
     assignment = models.OneToOneField(Assignment,
-                                      on_delete=models.SET_NULL,
+                                      on_delete=models.CASCADE,
                                       blank=True,
                                       null=True)
     grade = models.FloatField()
