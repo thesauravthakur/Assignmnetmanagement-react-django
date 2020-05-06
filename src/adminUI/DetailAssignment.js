@@ -69,9 +69,10 @@ class DetailAssignment extends React.Component {
                             <Hoc>
                                 <PageHeader
                                     onBack={() => this.props.history.push('/admin')}
-                                    title={assignment.title}
+                                    title='Go Back'
                                     extra={<p>{assignment.teacher}</p>}
                                 />
+                                <h5 style={{ textAlign: '-webkit-center', overflowWrap: 'break-word' }}>{assignment.title}</h5>
 
                                 <Form onSubmit={(e) => this.handleSubmit(e, assignment.id, questions.length)} className="login-form">
 

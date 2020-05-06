@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   loading: false,
   grade: [],
+  alert: false,
 };
 
 const getAssignmentStart = (state, action) => {
@@ -30,6 +31,8 @@ const getAssignmentFail = (state, action) => {
     loading: false
   });
 };
+
+
 
 
 
@@ -81,6 +84,11 @@ const getDetailAssignmentFail = (state, action) => {
     loading: false
   });
 };
+
+
+
+
+
 
 
 
@@ -159,6 +167,32 @@ const editDetailAssignmentFail = (state, action) => {
 
 
 
+const deleteAssignmentStart = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    alert: true
+  });
+};
+
+const deleteAssignmentSuccess = (state, action) => {
+  return updateObject(state, {
+    error: null,
+    loading: false
+  });
+};
+
+const deleteAssignmentFail = (state, action) => {
+  return updateObject(state, {
+    error: action.error,
+    loading: false
+  });
+};
+
+
+
+
+
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -198,6 +232,12 @@ const reducer = (state = initialState, action) => {
       return editDetailAssignmentSuccess(state, action);
     case actionTypes.EDIT_DETAIL_ASSIGNMENT_FAIL:
       return editDetailAssignmentFail(state, action);
+    case actionTypes.DELETE_ASSIGNMENT_START:
+      return deleteAssignmentStart(state, action);
+    case actionTypes.DELETE_ASSIGNMENT_SUCCESS:
+      return deleteAssignmentSuccess(state, action);
+    case actionTypes.DELETE_ASSIGNMENT_FAIL:
+      return deleteAssignmentFail(state, action);
     default:
       return state;
   }

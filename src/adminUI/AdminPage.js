@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Hoc from '../hoc/hoc';
-import SideBar from './SideBar';
 import { List, Avatar, Button, Skeleton } from 'antd';
 import * as actions from "../store/actions/assignment";
 import { Link } from 'react-router-dom';
@@ -28,6 +27,10 @@ class AdminPage extends React.Component {
             }
         }
     }
+    handelClick = (id) => {
+        this.props.deleteAssignment(id, this.props.token);
+        // window.location.reload()
+    }
     render() {
         return (
             <Hoc>
@@ -50,9 +53,11 @@ class AdminPage extends React.Component {
                                         <List.Item
                                             actions={[
                                                 this.props.username === item.teacher &&
-                                                <Link to={`/edit/${item.id}`} key="list-loadmore-more">edit</Link>
+                                                <Link to={`/edit/${item.id}`} key="list-loadmore-more">Edit</Link>
                                                 ,
-                                                <Link to={`/detail/${item.id}`} key="list-loadmore-more">more</Link>
+                                                this.props.username === item.teacher &&
+                                                <Link style={{ color: 'red' }} onClick={() => { this.handelClick(item.id) }} key="list-loadmore-more">Delete</Link>
+
                                             ]}
                                         >
 
@@ -81,6 +86,7 @@ const mapStateToProps = state => {
         error: state.auth.error,
         isAuthenticated: state.auth.token !== null,
         username: state.auth.username,
+        deletAlert: state.assignment.alert
 
     };
 };
@@ -89,7 +95,10 @@ const mapDispatchToProps = dispatch => {
         getAssignment: (token) =>
             dispatch(
                 actions.getAssignment(token)
-            )
+            ),
+        deleteAssignment: (id, token) => dispatch(
+            actions.deleteAssignment(id, token)
+        )
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPage)

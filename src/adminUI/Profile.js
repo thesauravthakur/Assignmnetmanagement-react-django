@@ -81,7 +81,7 @@ const mapStateToProps = state => {
     return {
         assignments: state.assignment.assignments,
         token: state.auth.token,
-        loading: state.auth.loading,
+        loading: state.assignment.loading,
         error: state.auth.error,
         isAuthenticated: state.auth.token !== null,
         username: state.auth.username,

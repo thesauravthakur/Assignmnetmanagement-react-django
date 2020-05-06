@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Hoc from '../hoc/hoc';
-import { Form, Input, Button, Icon, Divider, notification } from 'antd';
+import { Form, Input, Button, Icon, Divider, notification, PageHeader } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import * as actions from "../store/actions/assignment";
 
@@ -222,6 +222,12 @@ class CreateAssignment extends React.Component {
                         :
                         (
                             <Hoc >
+                                <PageHeader
+                                    className="site-page-header"
+                                    onBack={() => this.props.history.push('/admin')}
+                                    title='Go Back'
+
+                                />
                                 <Form onSubmit={this.handleSubmit} className="login-form">
                                     <FormItem
                                         labelCol={{ span: 5 }}

@@ -147,6 +147,28 @@ export const editDetailAssignmentFail = error => {
 
 
 
+export const deleteAssignmentStart = () => {
+  return {
+    type: actionTypes.DELETE_ASSIGNMENT_START
+  };
+};
+
+export const deleteAssignmentSuccess = () => {
+  return {
+    type: actionTypes.DELETE_ASSIGNMENT_SUCCESS,
+  };
+};
+
+export const deleteAssignmentFail = error => {
+  return {
+    type: actionTypes.DELETE_ASSIGNMENT_FAIL,
+    error: error
+  };
+};
+
+
+
+
 
 
 
@@ -270,6 +292,24 @@ export const editDetailAssignment = (data, token, id) => {
       })
       .catch(err => {
         dispatch(editDetailAssignmentFail(err));
+      });
+  };
+};
+
+export const deleteAssignment = (id, token) => {
+  return dispatch => {
+    dispatch(deleteAssignmentStart());
+    axios.defaults.headers = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    axios
+      .delete(`http://127.0.0.1:8000/assignments/assignment_list/${id}/`)
+      .then(res => {
+        dispatch(deleteAssignmentSuccess());
+      })
+      .catch(err => {
+        dispatch(deleteAssignmentFail(err));
       });
   };
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/assignment';
-import { Form, Input, Button, Icon, Divider, notification } from 'antd';
+import { Form, Input, Button, Icon, Divider, notification, PageHeader } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import Hoc from '../hoc/hoc';
 import { Skeleton } from 'antd';
@@ -371,7 +371,21 @@ class EditAssignment extends React.Component {
         });
     };
 
+    openNotification = () => {
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                notification.open({
+                    message: 'Please Input The Data Correctly',
+                });
+            } else {
+                notification.open({
+                    message: values.title,
+                    description: `Assignment Edited Successfully with Title ${values.title}`,
+                });
+            }
+        })
 
+    };
     render() {
         const { getFieldDecorator } = this.props.form;
 
@@ -412,7 +426,12 @@ class EditAssignment extends React.Component {
                         :
                         (
                             <Hoc>
-                                <p>this is page edit</p>
+                                <PageHeader
+                                    className="site-page-header"
+                                    onBack={() => this.props.history.push('/admin')}
+                                    title='Go Back'
+
+                                />
                                 <Form onSubmit={this.handleSubmit} className="login-form">
                                     <FormItem
                                         labelCol={{ span: 5 }}
@@ -468,7 +487,7 @@ class EditAssignment extends React.Component {
                                             Reset Fields
                                         </Button>
                                         <Button
-                                            // onClick={this.openNotification}
+                                            onClick={this.openNotification}
                                             htmlType="submit"
                                             type="primary"
                                             style={{ float: "right" }}
